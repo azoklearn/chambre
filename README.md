@@ -8,6 +8,7 @@ Présentation des chambres, réservation et **paiement en ligne sécurisé via S
 - Assurance habitation : **100 €**
 - Total à la réservation : **1 680 €** (1er mois + dépôt + assurance)
 - Contact : WhatsApp **+33 6 72 29 47 51**
+- **Bilingue FR / EN** : sélecteur de langue dans l'en-tête, choix mémorisé, page de paiement Stripe et confirmation adaptées à la langue.
 
 ## Démarrer le site
 

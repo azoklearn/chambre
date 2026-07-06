@@ -20,21 +20,47 @@
   <main class="thanks">
     <div class="thanks-card">
       <div class="check">✓</div>
-      <h1>Réservation confirmée&nbsp;!</h1>
+      <h1 id="s-title">Réservation confirmée&nbsp;!</h1>
       <p id="room-line">Merci, votre paiement a bien été reçu.</p>
-      <p>Nous vous contactons très vite pour finaliser votre entrée dans les lieux. Un reçu vous a été envoyé par e-mail.</p>
+      <p id="s-body">Nous vous contactons très vite pour finaliser votre entrée dans les lieux. Un reçu vous a été envoyé par e-mail.</p>
       <div class="thanks-actions">
-        <a class="btn btn-primary" href="/">Retour à l'accueil</a>
-        <a class="btn btn-whatsapp" href="https://wa.me/33672294751" target="_blank" rel="noopener">Nous écrire sur WhatsApp</a>
+        <a class="btn btn-primary" href="/" id="s-home">Retour à l'accueil</a>
+        <a class="btn btn-whatsapp" href="https://wa.me/33672294751" target="_blank" rel="noopener" id="s-wa">Nous écrire sur WhatsApp</a>
       </div>
     </div>
   </main>
   <script>
-    const room = new URLSearchParams(location.search).get('room');
-    if (room) {
-      document.getElementById('room-line').textContent =
-        `Merci ! Votre réservation pour la « ${room} » est confirmée.`;
-    }
+    const params = new URLSearchParams(location.search);
+    let lang = params.get('lang');
+    if (lang !== 'en' && lang !== 'fr') lang = localStorage.getItem('lang') || 'fr';
+    const room = params.get('room');
+    const T = {
+      fr: {
+        title: 'Réservation confirmée&nbsp;!',
+        roomLine: (r) => `Merci ! Votre réservation pour la « ${r} » est confirmée.`,
+        thanks: 'Merci, votre paiement a bien été reçu.',
+        body: 'Nous vous contactons très vite pour finaliser votre entrée dans les lieux. Un reçu vous a été envoyé par e-mail.',
+        home: "Retour à l'accueil",
+        wa: 'Nous écrire sur WhatsApp',
+        docTitle: 'Réservation confirmée — Student Flat Room Paris',
+      },
+      en: {
+        title: 'Booking confirmed!',
+        roomLine: (r) => `Thank you! Your booking for “${r}” is confirmed.`,
+        thanks: 'Thank you, your payment has been received.',
+        body: "We'll contact you very soon to finalise your move-in. A receipt has been sent to your email.",
+        home: 'Back to home',
+        wa: 'Message us on WhatsApp',
+        docTitle: 'Booking confirmed — Student Flat Room Paris',
+      },
+    }[lang];
+    document.documentElement.lang = lang;
+    document.title = T.docTitle;
+    document.getElementById('s-title').innerHTML = T.title;
+    document.getElementById('room-line').textContent = room ? T.roomLine(room) : T.thanks;
+    document.getElementById('s-body').textContent = T.body;
+    document.getElementById('s-home').textContent = T.home;
+    document.getElementById('s-wa').textContent = T.wa;
   </script>
 </body>
 </html>

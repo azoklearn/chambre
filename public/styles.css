@@ -89,6 +89,33 @@ h1, h2, h3, .brand-name, .price-value, .total-value {
 /* Éléments réservés au menu plein écran mobile */
 .nav-menu-cta, .nav-menu-eyebrow, .nav-num, .nav-menu-footer { display: none; }
 
+/* Sélecteur de langue FR / EN */
+.lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  padding: 3px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+}
+.lang-toggle button {
+  font: inherit;
+  font-size: .8rem;
+  font-weight: 600;
+  color: var(--ink-soft);
+  padding: 5px 11px;
+  border: none;
+  background: transparent;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color .15s ease, background .2s ease;
+  line-height: 1;
+}
+.lang-toggle button.is-active {
+  background: var(--brand);
+  color: #fff;
+}
+
 /* Bouton hamburger (caché sur desktop) */
 .nav-toggle {
   display: none;
@@ -401,7 +428,12 @@ body.menu-open .wa-float { opacity: 0; pointer-events: none; transition: opacity
 
 /* ---------- Responsive ---------- */
 @media (max-width: 720px) {
-  .nav { position: sticky; }
+  .nav { position: sticky; gap: 10px; }
+  /* Header compact : marque sur une seule ligne malgré le sélecteur de langue */
+  .brand { gap: 8px; }
+  .brand-mark { width: 30px; height: 30px; font-size: .85rem; }
+  .brand-name { white-space: nowrap; font-size: .92rem; }
+  .lang-toggle button { padding: 4px 9px; font-size: .72rem; }
   /* Quand le menu est ouvert : retirer le backdrop-filter du header,
      sinon il piège l'overlay "fixed" à l'intérieur du header au lieu du plein écran */
   body.menu-open .nav {
@@ -412,6 +444,8 @@ body.menu-open .wa-float { opacity: 0; pointer-events: none; transition: opacity
   }
   .nav-cta { display: none; }
   .nav-toggle { display: flex; position: relative; z-index: 1210; }
+  /* Sélecteur de langue au-dessus de l'overlay du menu */
+  .lang-toggle { position: relative; z-index: 1210; }
 
   /* Menu plein écran */
   .nav-links {

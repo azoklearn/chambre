@@ -32,6 +32,8 @@ app.post('/api/checkout', async (req, res) => {
     const room = ROOMS.find((r) => r.id === req.body.roomId);
     if (!room) return res.status(400).json({ error: 'Chambre introuvable.' });
 
+    const lang = req.body.lang === 'en' ? 'en' : 'fr';
+
     const line = (name, description, amount) => ({
       quantity: 1,
       price_data: {
@@ -41,18 +43,23 @@ app.post('/api/checkout', async (req, res) => {
       },
     });
 
+    const labels = {
+      fr: { rent: 'Premier mois de loyer', deposit: 'Dépôt de garantie', insurance: 'Assurance habitation' },
+      en: { rent: 'First month of rent', deposit: 'Security deposit', insurance: 'Home insurance' },
+    }[lang];
+
     const session = await stripe.checkout.sessions.create({
       mode: 'payment',
       line_items: [
-        line('Premier mois de loyer', room.title, room.rent),
-        line('Dépôt de garantie', room.title, room.deposit),
-        line('Assurance habitation', room.title, room.insurance),
+        line(labels.rent, room.title, room.rent),
+        line(labels.deposit, room.title, room.deposit),
+        line(labels.insurance, room.title, room.insurance),
       ],
       customer_email: req.body.email || undefined,
       metadata: { roomId: room.id, roomTitle: room.title },
-      success_url: `${BASE_URL}/success.html?room=${encodeURIComponent(room.title)}&session_id={CHECKOUT_SESSION_ID}`,
+      success_url: `${BASE_URL}/success.html?room=${encodeURIComponent(room.title)}&lang=${lang}&session_id={CHECKOUT_SESSION_ID}`,
       cancel_url: `${BASE_URL}/?canceled=1#chambres`,
-      locale: 'fr',
+      locale: lang,
     });
 
     res.json({ url: session.url });

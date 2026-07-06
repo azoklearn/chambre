@@ -19,11 +19,11 @@
       <span class="brand-name">Student Flat Room <em>Paris</em></span>
     </a>
     <nav class="nav-links" id="nav-links">
-      <span class="nav-menu-eyebrow">Menu</span>
-      <a href="#chambres"><span class="nav-num">01</span>Chambres</a>
-      <a href="#infos"><span class="nav-num">02</span>Infos &amp; tarifs</a>
-      <a href="#contact"><span class="nav-num">03</span>Contact</a>
-      <a class="btn btn-primary nav-menu-cta" href="#chambres">Réserver une chambre</a>
+      <span class="nav-menu-eyebrow" data-i18n="nav.menu">Menu</span>
+      <a href="#chambres"><span class="nav-num">01</span><span data-i18n="nav.rooms">Chambres</span></a>
+      <a href="#infos"><span class="nav-num">02</span><span data-i18n="nav.info">Infos &amp; tarifs</span></a>
+      <a href="#contact"><span class="nav-num">03</span><span data-i18n="nav.contact">Contact</span></a>
+      <a class="btn btn-primary nav-menu-cta" href="#chambres" data-i18n="nav.bookRoom">Réserver une chambre</a>
       <div class="nav-menu-footer">
         <a class="nav-menu-wa" href="https://wa.me/33672294751" target="_blank" rel="noopener">
           <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35zM12.05 21.5h-.01a9.4 9.4 0 0 1-4.79-1.31l-.34-.2-3.56.93.95-3.47-.22-.36a9.38 9.38 0 0 1-1.44-5A9.43 9.43 0 0 1 12.05 2.65a9.38 9.38 0 0 1 9.4 9.43 9.43 9.43 0 0 1-9.4 9.42zM20.52 3.56A11.36 11.36 0 0 0 12.05.24C5.8.24.72 5.32.72 11.57c0 2 .52 3.95 1.52 5.67L.63 23.36l6.26-1.64a11.3 11.3 0 0 0 5.16 1.31h.01c6.25 0 11.33-5.08 11.33-11.33a11.27 11.27 0 0 0-3.32-8z"/></svg>
@@ -32,7 +32,11 @@
         <span class="nav-menu-note">Gagny &amp; Rosny-sous-Bois · Île-de-France</span>
       </div>
     </nav>
-    <a class="btn btn-sm btn-primary nav-cta" href="#chambres">Réserver</a>
+    <div class="lang-toggle" id="lang-toggle" role="group" aria-label="Language / Langue">
+      <button type="button" data-lang="fr">FR</button>
+      <button type="button" data-lang="en">EN</button>
+    </div>
+    <a class="btn btn-sm btn-primary nav-cta" href="#chambres" data-i18n="nav.book">Réserver</a>
     <button class="nav-toggle" id="nav-toggle" aria-label="Ouvrir le menu" aria-expanded="false" aria-controls="nav-links">
       <span></span><span></span><span></span>
     </button>
@@ -42,23 +46,23 @@
   <section class="hero">
     <div class="hero-inner">
       <p class="eyebrow">Gagny · Rosny-sous-Bois · Île-de-France</p>
-      <h1>Votre chambre meublée,<br />aux portes de Paris.</h1>
-      <p class="hero-sub">
+      <h1 data-i18n="hero.title">Votre chambre meublée,<br />aux portes de Paris.</h1>
+      <p class="hero-sub" data-i18n="hero.sub">
         Des chambres tout confort, prêtes à vivre, à deux pas des transports.
         Réservez et payez en ligne en quelques minutes.
       </p>
       <div class="hero-actions">
-        <a class="btn btn-primary" href="#chambres">Voir les chambres disponibles</a>
-        <a class="btn btn-ghost" href="#infos">Tarifs &amp; conditions</a>
+        <a class="btn btn-primary" href="#chambres" data-i18n="hero.cta1">Voir les chambres disponibles</a>
+        <a class="btn btn-ghost" href="#infos" data-i18n="hero.cta2">Tarifs &amp; conditions</a>
       </div>
       <ul class="hero-stats">
-        <li><strong data-count="20">0</strong><span>chambres</span></li>
-        <li><strong data-count="680" data-suffix="&nbsp;€">0</strong><span>par mois</span></li>
-        <li><strong data-count="2">0</strong><span>résidences</span></li>
+        <li><strong data-count="20">0</strong><span data-i18n="hero.stat1">chambres</span></li>
+        <li><strong data-count="680" data-suffix="&nbsp;€">0</strong><span data-i18n="hero.stat2">par mois</span></li>
+        <li><strong data-count="2">0</strong><span data-i18n="hero.stat3">résidences</span></li>
       </ul>
       <a href="#chambres" class="scroll-cue">
         <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 16.5 5.5 10l1.4-1.4 5.1 5.1 5.1-5.1L18.5 10z"/></svg>
-        Découvrir les chambres
+        <span data-i18n="hero.scroll">Découvrir les chambres</span>
       </a>
     </div>
   </section>
@@ -66,12 +70,12 @@
   <!-- CHAMBRES -->
   <section class="section" id="chambres">
     <div class="section-head reveal" data-anim="blur">
-      <h2>Nos chambres disponibles</h2>
-      <p>Chaque photo correspond à une chambre réelle. Choisissez la vôtre.</p>
+      <h2 data-i18n="rooms.title">Nos chambres disponibles</h2>
+      <p data-i18n="rooms.sub">Chaque photo correspond à une chambre réelle. Choisissez la vôtre.</p>
     </div>
 
     <div class="filters reveal" data-anim="up" id="filters">
-      <button class="chip is-active" data-city="all">Toutes</button>
+      <button class="chip is-active" data-city="all" data-i18n="filters.all">Toutes</button>
       <button class="chip" data-city="gagny">Gagny <span>14</span></button>
       <button class="chip" data-city="rosny">Rosny-sous-Bois <span>6</span></button>
     </div>
@@ -82,46 +86,46 @@
   <!-- INFOS / TARIFS -->
   <section class="section section-alt" id="infos">
     <div class="section-head reveal" data-anim="blur">
-      <h2>Tarifs &amp; conditions</h2>
-      <p>Une tarification claire, identique pour toutes les chambres.</p>
+      <h2 data-i18n="info.title">Tarifs &amp; conditions</h2>
+      <p data-i18n="info.sub">Une tarification claire, identique pour toutes les chambres.</p>
     </div>
     <div class="pricing">
       <div class="price-card reveal" data-anim="up">
-        <span class="price-label">Loyer mensuel</span>
+        <span class="price-label" data-i18n="price.rentLabel">Loyer mensuel</span>
         <span class="price-value">680&nbsp;€</span>
-        <span class="price-note">chambre standard, charges comprises</span>
+        <span class="price-note" data-i18n="price.rentNote">chambre standard, charges comprises</span>
       </div>
       <div class="price-card reveal" data-anim="up" data-delay="120">
-        <span class="price-label">Dépôt de garantie</span>
+        <span class="price-label" data-i18n="price.depositLabel">Dépôt de garantie</span>
         <span class="price-value">900&nbsp;€</span>
-        <span class="price-note">restitué en fin de séjour</span>
+        <span class="price-note" data-i18n="price.depositNote">restitué en fin de séjour</span>
       </div>
       <div class="price-card reveal" data-anim="up" data-delay="240">
-        <span class="price-label">Assurance habitation</span>
+        <span class="price-label" data-i18n="price.insuranceLabel">Assurance habitation</span>
         <span class="price-value">100&nbsp;€</span>
-        <span class="price-note">couverture obligatoire</span>
+        <span class="price-note" data-i18n="price.insuranceNote">couverture obligatoire</span>
       </div>
     </div>
     <div class="total-banner reveal" data-anim="zoom">
       <div>
-        <span class="total-label">À régler pour réserver votre entrée</span>
-        <span class="total-sub">1<sup>er</sup> mois + dépôt + assurance</span>
+        <span class="total-label" data-i18n="total.label">À régler pour réserver votre entrée</span>
+        <span class="total-sub" data-i18n="total.sub">1<sup>er</sup> mois + dépôt + assurance</span>
       </div>
       <span class="total-value">1&nbsp;680&nbsp;€</span>
     </div>
     <ul class="features reveal" data-anim="up">
-      <li>Chambres entièrement meublées &amp; équipées</li>
-      <li>Salle de bain moderne</li>
-      <li>Proche transports vers Paris</li>
-      <li>Paiement sécurisé par Stripe</li>
+      <li data-i18n="features.f1">Chambres entièrement meublées &amp; équipées</li>
+      <li data-i18n="features.f2">Salle de bain moderne</li>
+      <li data-i18n="features.f3">Proche transports vers Paris</li>
+      <li data-i18n="features.f4">Paiement sécurisé par Stripe</li>
     </ul>
   </section>
 
   <!-- CONTACT -->
   <section class="section contact" id="contact">
     <div class="contact-card reveal" data-anim="zoom">
-      <h2>Une question avant de réserver&nbsp;?</h2>
-      <p>Écrivez-nous directement sur WhatsApp, réponse rapide.</p>
+      <h2 data-i18n="contact.title">Une question avant de réserver&nbsp;?</h2>
+      <p data-i18n="contact.sub">Écrivez-nous directement sur WhatsApp, réponse rapide.</p>
       <a class="btn btn-whatsapp" href="https://wa.me/33672294751" target="_blank" rel="noopener">
         <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path fill="currentColor" d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.96-.94 1.16-.17.2-.35.22-.65.07-.3-.15-1.26-.46-2.4-1.48-.89-.79-1.49-1.77-1.66-2.07-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.02-.52-.08-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.8.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.22 3.08c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.62.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.7.25-1.29.17-1.42-.07-.13-.27-.2-.57-.35zM12.05 21.5h-.01a9.4 9.4 0 0 1-4.79-1.31l-.34-.2-3.56.93.95-3.47-.22-.36a9.38 9.38 0 0 1-1.44-5A9.43 9.43 0 0 1 12.05 2.65a9.38 9.38 0 0 1 9.4 9.43 9.43 9.43 0 0 1-9.4 9.42zM20.52 3.56A11.36 11.36 0 0 0 12.05.24C5.8.24.72 5.32.72 11.57c0 2 .52 3.95 1.52 5.67L.63 23.36l6.26-1.64a11.3 11.3 0 0 0 5.16 1.31h.01c6.25 0 11.33-5.08 11.33-11.33a11.27 11.27 0 0 0-3.32-8z"/></svg>
         +33 6 72 29 47 51
@@ -131,7 +135,7 @@
 
   <footer class="footer">
     <p>© <span id="year"></span> Student Flat Room Paris — Gagny &amp; Rosny-sous-Bois</p>
-    <p class="footer-sub">Paiement sécurisé · Chambres meublées · Île-de-France</p>
+    <p class="footer-sub" data-i18n="footer.sub">Paiement sécurisé · Chambres meublées · Île-de-France</p>
   </footer>
 
   <!-- BOUTON WHATSAPP FLOTTANT -->
@@ -150,26 +154,26 @@
         <h3 id="modal-title">Chambre</h3>
         <p id="modal-city" class="modal-city"></p>
         <div class="amenities-block">
-          <p class="amenities-title">Agencement de la chambre</p>
+          <p class="amenities-title" data-i18n="modal.amenTitle">Agencement de la chambre</p>
           <ul class="amenities" id="modal-amenities"></ul>
         </div>
         <div class="modal-breakdown">
-          <div><span>1<sup>er</sup> mois de loyer</span><strong>680&nbsp;€</strong></div>
-          <div><span>Dépôt de garantie</span><strong>900&nbsp;€</strong></div>
-          <div><span>Assurance habitation</span><strong>100&nbsp;€</strong></div>
-          <div class="modal-total"><span>Total à régler</span><strong>1&nbsp;680&nbsp;€</strong></div>
+          <div><span data-i18n="modal.rent">1<sup>er</sup> mois de loyer</span><strong>680&nbsp;€</strong></div>
+          <div><span data-i18n="modal.deposit">Dépôt de garantie</span><strong>900&nbsp;€</strong></div>
+          <div><span data-i18n="modal.insurance">Assurance habitation</span><strong>100&nbsp;€</strong></div>
+          <div class="modal-total"><span data-i18n="modal.total">Total à régler</span><strong>1&nbsp;680&nbsp;€</strong></div>
         </div>
         <label class="field">
-          <span>Votre e-mail (pour le reçu)</span>
-          <input type="email" id="modal-email" placeholder="prenom@email.com" autocomplete="email" />
+          <span data-i18n="modal.emailLabel">Votre e-mail (pour le reçu)</span>
+          <input type="email" id="modal-email" placeholder="prenom@email.com" data-i18n-ph="modal.emailPh" autocomplete="email" />
         </label>
-        <button class="btn btn-primary btn-block" id="pay-btn">Réserver &amp; payer en ligne</button>
+        <button class="btn btn-primary btn-block" id="pay-btn" data-i18n="modal.payBtn">Réserver &amp; payer en ligne</button>
         <p class="modal-error" id="modal-error" hidden></p>
         <p class="modal-secure">
           <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="currentColor" d="M12 1 3 5v6c0 5.5 3.8 10.7 9 12 5.2-1.3 9-6.5 9-12V5l-9-4zm0 10.9h7c-.5 4.1-3.2 7.8-7 9V12H5V6.3l7-3.1V12z"/></svg>
-          Paiement sécurisé via Stripe — aucune donnée bancaire ne transite par ce site.
+          <span data-i18n="modal.secure">Paiement sécurisé via Stripe — aucune donnée bancaire ne transite par ce site.</span>
         </p>
-        <a class="modal-wa" href="https://wa.me/33672294751" target="_blank" rel="noopener">Préférez réserver via WhatsApp&nbsp;?</a>
+        <a class="modal-wa" href="https://wa.me/33672294751" target="_blank" rel="noopener" data-i18n="modal.wa">Préférez réserver via WhatsApp&nbsp;?</a>
       </div>
     </div>
   </div>
