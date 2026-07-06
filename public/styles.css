@@ -86,7 +86,8 @@ h1, h2, h3, .brand-name, .price-value, .total-value {
 .nav-links { display: flex; gap: 26px; align-items: center; }
 .nav-links a { color: var(--ink-soft); font-weight: 500; font-size: .95rem; }
 .nav-links a:hover { color: var(--ink); }
-.nav-menu-cta { display: none; }
+/* Éléments réservés au menu plein écran mobile */
+.nav-menu-cta, .nav-menu-eyebrow, .nav-num, .nav-menu-footer { display: none; }
 
 /* Bouton hamburger (caché sur desktop) */
 .nav-toggle {
@@ -312,6 +313,8 @@ h1, h2, h3, .brand-name, .price-value, .total-value {
 }
 .wa-float:hover { transform: scale(1.06); box-shadow: 0 10px 30px rgba(37, 211, 102, .55); }
 .wa-float:active { transform: scale(.97); }
+/* Masqué quand le menu plein écran est ouvert */
+body.menu-open .wa-float { opacity: 0; pointer-events: none; transition: opacity .2s ease; }
 .wa-float svg { flex-shrink: 0; }
 .wa-float-label { font-weight: 600; font-size: 1rem; padding-right: 6px; }
 
@@ -398,35 +401,143 @@ h1, h2, h3, .brand-name, .price-value, .total-value {
 
 /* ---------- Responsive ---------- */
 @media (max-width: 720px) {
+  .nav { position: sticky; }
+  /* Quand le menu est ouvert : retirer le backdrop-filter du header,
+     sinon il piège l'overlay "fixed" à l'intérieur du header au lieu du plein écran */
+  body.menu-open .nav {
+    backdrop-filter: none;
+    -webkit-backdrop-filter: none;
+    background: transparent;
+    border-bottom-color: transparent;
+  }
   .nav-cta { display: none; }
-  .nav-toggle { display: flex; }
-  .nav-menu-cta { display: inline-flex; margin-top: 6px; }
+  .nav-toggle { display: flex; position: relative; z-index: 1210; }
 
+  /* Menu plein écran */
   .nav-links {
     position: fixed;
-    top: 64px;
-    left: 0;
-    right: 0;
+    inset: 0;
+    z-index: 1200;
+    display: flex;
     flex-direction: column;
     align-items: stretch;
+    justify-content: center;
     gap: 0;
-    background: var(--surface);
-    border-bottom: 1px solid var(--line);
-    box-shadow: var(--shadow);
-    padding: 8px 20px 20px;
-    transform: translateY(-12px);
+    padding: clamp(80px, 16vh, 130px) clamp(24px, 8vw, 60px) 40px;
+    background:
+      radial-gradient(120% 90% at 100% 0%, rgba(31, 111, 92, .16), transparent 55%),
+      radial-gradient(120% 90% at 0% 100%, rgba(201, 132, 62, .12), transparent 55%),
+      var(--bg);
     opacity: 0;
-    pointer-events: none;
-    transition: transform .25s ease, opacity .25s ease;
+    visibility: hidden;
+    transform: scale(1.03);
+    transition: opacity .38s ease, transform .45s cubic-bezier(.2,.7,.2,1), visibility .38s;
+    overflow-y: auto;
   }
-  .nav-links a { padding: 14px 4px; font-size: 1.05rem; border-bottom: 1px solid var(--line); }
-  .nav-links a:last-child { border-bottom: none; }
-  .nav-links.open {
-    transform: translateY(0);
-    opacity: 1;
-    pointer-events: auto;
+  .nav-links.open { opacity: 1; visibility: visible; transform: none; }
+
+  .nav-menu-eyebrow {
+    display: block;
+    text-transform: uppercase;
+    letter-spacing: .22em;
+    font-size: .72rem;
+    font-weight: 700;
+    color: var(--brand);
+    margin-bottom: 18px;
+    padding-left: 2px;
   }
+
+  .nav-links a {
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+    padding: 18px 2px;
+    font-family: 'Fraunces', Georgia, serif;
+    font-size: clamp(2rem, 9vw, 2.9rem);
+    font-weight: 600;
+    color: var(--ink);
+    border-bottom: 1px solid var(--line);
+    letter-spacing: -0.01em;
+    line-height: 1;
+  }
+  .nav-links a:hover { color: var(--brand); }
+
+  .nav-num {
+    display: inline-block;
+    font-family: 'Inter', sans-serif;
+    font-size: .8rem;
+    font-weight: 600;
+    color: var(--brand);
+    letter-spacing: .05em;
+    opacity: .7;
+  }
+
+  /* Bouton "Réserver" dans le menu */
+  .nav-links .nav-menu-cta {
+    display: inline-flex;
+    align-self: flex-start;
+    margin-top: 28px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1.05rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 1.2;
+    padding: 15px 26px;
+    border-bottom: none;
+    color: #fff;
+  }
+  .nav-links .nav-menu-cta:hover { color: #fff; }
+
+  /* Pied du menu : contact */
+  .nav-menu-footer {
+    display: block;
+    margin-top: auto;
+    padding-top: 30px;
+  }
+  .nav-links .nav-menu-wa {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    padding: 13px 20px;
+    font-family: 'Inter', sans-serif;
+    font-size: 1rem;
+    font-weight: 600;
+    letter-spacing: 0;
+    line-height: 1.2;
+    color: var(--wa);
+    background: rgba(37, 211, 102, .1);
+    border: 1px solid rgba(37, 211, 102, .3);
+    border-radius: 999px;
+  }
+  .nav-menu-note {
+    display: block;
+    margin-top: 16px;
+    font-family: 'Inter', sans-serif;
+    font-size: .82rem;
+    color: var(--ink-soft);
+    padding-left: 2px;
+  }
+
+  /* Apparition en cascade des éléments quand le menu s'ouvre */
+  .nav-links.open > * {
+    animation: menuItemIn .5s cubic-bezier(.2,.7,.2,1) both;
+  }
+  .nav-links.open .nav-menu-eyebrow { animation-delay: .08s; }
+  .nav-links.open a:nth-of-type(1) { animation-delay: .14s; }
+  .nav-links.open a:nth-of-type(2) { animation-delay: .20s; }
+  .nav-links.open a:nth-of-type(3) { animation-delay: .26s; }
+  .nav-links.open .nav-menu-cta { animation-delay: .32s; }
+  .nav-links.open .nav-menu-footer { animation-delay: .40s; }
+
+  /* Verrou du scroll de la page quand le menu est ouvert */
+  body.menu-open { overflow: hidden; }
+
   .hero-stats { gap: 28px; }
+}
+
+@keyframes menuItemIn {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 @media (max-width: 460px) {
   .grid { grid-template-columns: 1fr; }

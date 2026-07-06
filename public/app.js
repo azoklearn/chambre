@@ -208,6 +208,7 @@ const navToggle = document.getElementById('nav-toggle');
 const navLinks = document.getElementById('nav-links');
 function setMenu(open) {
   navLinks.classList.toggle('open', open);
+  document.body.classList.toggle('menu-open', open);
   navToggle.setAttribute('aria-expanded', String(open));
   navToggle.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
 }
