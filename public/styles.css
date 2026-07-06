@@ -313,3 +313,165 @@ h1, h2, h3, .brand-name, .price-value, .total-value {
   .grid { grid-template-columns: 1fr; }
   .brand-name { font-size: .95rem; }
 }
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+
+/* ---------- Keyframes ---------- */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(38px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeDown {
+  from { opacity: 0; transform: translateY(-28px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeLeft {
+  from { opacity: 0; transform: translateX(-46px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes fadeRight {
+  from { opacity: 0; transform: translateX(46px); }
+  to   { opacity: 1; transform: translateX(0); }
+}
+@keyframes zoomIn {
+  from { opacity: 0; transform: scale(.86); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes blurIn {
+  from { opacity: 0; filter: blur(14px); transform: translateY(20px); }
+  to   { opacity: 1; filter: blur(0); transform: translateY(0); }
+}
+@keyframes flipUp {
+  from { opacity: 0; transform: perspective(900px) rotateX(-24deg) translateY(40px); transform-origin: bottom; }
+  to   { opacity: 1; transform: perspective(900px) rotateX(0) translateY(0); }
+}
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-9px); }
+}
+@keyframes pulseDot {
+  0%   { box-shadow: 0 0 0 0 rgba(127, 240, 201, .7); }
+  70%  { box-shadow: 0 0 0 8px rgba(127, 240, 201, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(127, 240, 201, 0); }
+}
+@keyframes gradientShift {
+  0%   { background-position: 0% 50%, 100% 50%; }
+  50%  { background-position: 100% 50%, 0% 50%; }
+  100% { background-position: 0% 50%, 100% 50%; }
+}
+@keyframes shimmer {
+  from { transform: translateX(-120%) skewX(-18deg); }
+  to   { transform: translateX(320%) skewX(-18deg); }
+}
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(6px); }
+}
+@keyframes sheen {
+  0%   { opacity: 0; }
+  15%  { opacity: .55; }
+  100% { opacity: 0; }
+}
+
+/* ---------- Scroll-reveal base ---------- */
+.reveal {
+  opacity: 0;
+  will-change: transform, opacity, filter;
+}
+.reveal.in {
+  animation: fadeUp .8s cubic-bezier(.2, .7, .2, 1) forwards;
+}
+.reveal[data-anim="left"].in   { animation-name: fadeLeft; }
+.reveal[data-anim="right"].in  { animation-name: fadeRight; }
+.reveal[data-anim="zoom"].in   { animation-name: zoomIn; }
+.reveal[data-anim="blur"].in   { animation-name: blurIn; }
+.reveal[data-anim="flip"].in   { animation-name: flipUp; }
+.reveal[data-anim="down"].in   { animation-name: fadeDown; }
+
+/* Cartes révélées avec stagger (délai injecté en inline via JS) */
+.card.reveal.in { animation: flipUp .75s cubic-bezier(.2, .7, .2, 1) both; }
+
+/* ---------- Hero : entrée à la charge ---------- */
+.hero .eyebrow       { opacity: 0; animation: fadeDown .7s ease .1s forwards; }
+.hero h1             { opacity: 0; animation: blurIn 1s cubic-bezier(.2,.7,.2,1) .22s forwards; }
+.hero-sub            { opacity: 0; animation: fadeUp .8s ease .5s forwards; }
+.hero-actions        { opacity: 0; animation: fadeUp .8s ease .68s forwards; }
+.hero-stats li       { opacity: 0; animation: fadeUp .7s ease forwards; }
+.hero-stats li:nth-child(1) { animation-delay: .85s; }
+.hero-stats li:nth-child(2) { animation-delay: .97s; }
+.hero-stats li:nth-child(3) { animation-delay: 1.09s; }
+
+/* Fond du hero animé en continu */
+.hero {
+  background-size: 160% 160%, 160% 160%;
+  animation: gradientShift 18s ease-in-out infinite;
+}
+
+/* ---------- Micro-interactions permanentes ---------- */
+.card-avail::before { animation: pulseDot 2.2s ease-out infinite; }
+.brand-mark { transition: transform .3s ease; }
+.brand:hover .brand-mark { transform: rotate(-8deg) scale(1.08); }
+.total-value { display: inline-block; animation: floaty 4s ease-in-out infinite; }
+
+/* Effet de brillance qui balaie les cartes au survol */
+.card-media::after {
+  content: "";
+  position: absolute; top: 0; left: 0; width: 60%; height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,.45), transparent);
+  transform: translateX(-120%) skewX(-18deg);
+  pointer-events: none;
+}
+.card:hover .card-media::after { animation: shimmer .9s ease; }
+
+/* Boutons : léger soulèvement animé */
+.btn-primary, .btn-whatsapp { position: relative; overflow: hidden; }
+.btn-primary::after, .btn-whatsapp::after {
+  content: ""; position: absolute; inset: 0;
+  background: linear-gradient(120deg, transparent 30%, rgba(255,255,255,.35) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform .6s ease;
+}
+.btn-primary:hover::after, .btn-whatsapp:hover::after { transform: translateX(120%); }
+
+/* Chips de filtre : rebond au changement */
+.chip { transition: all .18s ease, transform .18s cubic-bezier(.34,1.56,.64,1); }
+.chip.is-active { transform: scale(1.04); }
+
+/* Price cards : soulèvement au survol */
+.price-card { transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease; }
+.price-card:hover { transform: translateY(-6px); box-shadow: var(--shadow); border-color: var(--brand); }
+
+/* Total banner : léger reflet qui passe */
+.total-banner { position: relative; overflow: hidden; }
+.total-banner::before {
+  content: ""; position: absolute; top: 0; left: -30%; width: 30%; height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,.18), transparent);
+  animation: sheen 5s ease-in-out infinite;
+}
+
+/* Features : coche qui apparaît en pop quand révélée */
+.features li.in-tick::before { animation: zoomIn .4s cubic-bezier(.34,1.56,.64,1) both; }
+
+/* Flèche de scroll dans le hero */
+.scroll-cue {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin-top: 34px; color: var(--ink-soft); font-size: .85rem; font-weight: 500;
+  opacity: 0; animation: fadeUp .8s ease 1.3s forwards;
+}
+.scroll-cue svg { animation: bob 1.8s ease-in-out infinite; }
+
+/* Nav : ombre qui apparaît au scroll */
+.nav { transition: box-shadow .3s ease, background .3s ease; }
+.nav.scrolled { box-shadow: 0 6px 22px rgba(28,26,23,.07); }
+
+/* ---------- Accessibilité : réduire les animations ---------- */
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+  .reveal { opacity: 1 !important; }
+}

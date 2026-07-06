@@ -40,21 +40,25 @@
         <a class="btn btn-ghost" href="#infos">Tarifs &amp; conditions</a>
       </div>
       <ul class="hero-stats">
-        <li><strong>20</strong><span>chambres</span></li>
-        <li><strong>680&nbsp;€</strong><span>par mois</span></li>
-        <li><strong>2</strong><span>résidences</span></li>
+        <li><strong data-count="20">0</strong><span>chambres</span></li>
+        <li><strong data-count="680" data-suffix="&nbsp;€">0</strong><span>par mois</span></li>
+        <li><strong data-count="2">0</strong><span>résidences</span></li>
       </ul>
+      <a href="#chambres" class="scroll-cue">
+        <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path fill="currentColor" d="M12 16.5 5.5 10l1.4-1.4 5.1 5.1 5.1-5.1L18.5 10z"/></svg>
+        Découvrir les chambres
+      </a>
     </div>
   </section>
 
   <!-- CHAMBRES -->
   <section class="section" id="chambres">
-    <div class="section-head">
+    <div class="section-head reveal" data-anim="blur">
       <h2>Nos chambres disponibles</h2>
       <p>Chaque photo correspond à une chambre réelle. Choisissez la vôtre.</p>
     </div>
 
-    <div class="filters" id="filters">
+    <div class="filters reveal" data-anim="up" id="filters">
       <button class="chip is-active" data-city="all">Toutes</button>
       <button class="chip" data-city="gagny">Gagny <span>14</span></button>
       <button class="chip" data-city="rosny">Rosny-sous-Bois <span>6</span></button>
@@ -65,35 +69,35 @@
 
   <!-- INFOS / TARIFS -->
   <section class="section section-alt" id="infos">
-    <div class="section-head">
+    <div class="section-head reveal" data-anim="blur">
       <h2>Tarifs &amp; conditions</h2>
       <p>Une tarification claire, identique pour toutes les chambres.</p>
     </div>
     <div class="pricing">
-      <div class="price-card">
+      <div class="price-card reveal" data-anim="up">
         <span class="price-label">Loyer mensuel</span>
         <span class="price-value">680&nbsp;€</span>
         <span class="price-note">chambre standard, charges comprises</span>
       </div>
-      <div class="price-card">
+      <div class="price-card reveal" data-anim="up" data-delay="120">
         <span class="price-label">Dépôt de garantie</span>
         <span class="price-value">900&nbsp;€</span>
         <span class="price-note">restitué en fin de séjour</span>
       </div>
-      <div class="price-card">
+      <div class="price-card reveal" data-anim="up" data-delay="240">
         <span class="price-label">Assurance habitation</span>
         <span class="price-value">100&nbsp;€</span>
         <span class="price-note">couverture obligatoire</span>
       </div>
     </div>
-    <div class="total-banner">
+    <div class="total-banner reveal" data-anim="zoom">
       <div>
         <span class="total-label">À régler pour réserver votre entrée</span>
         <span class="total-sub">1<sup>er</sup> mois + dépôt + assurance</span>
       </div>
       <span class="total-value">1&nbsp;680&nbsp;€</span>
     </div>
-    <ul class="features">
+    <ul class="features reveal" data-anim="up">
       <li>Chambres entièrement meublées &amp; équipées</li>
       <li>Salle de bain moderne</li>
       <li>Proche transports vers Paris</li>
@@ -103,7 +107,7 @@
 
   <!-- CONTACT -->
   <section class="section contact" id="contact">
-    <div class="contact-card">
+    <div class="contact-card reveal" data-anim="zoom">
       <h2>Une question avant de réserver&nbsp;?</h2>
       <p>Écrivez-nous directement sur WhatsApp, réponse rapide.</p>
       <a class="btn btn-whatsapp" href="https://wa.me/33672294751" target="_blank" rel="noopener">

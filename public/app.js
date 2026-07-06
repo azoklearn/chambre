@@ -24,11 +24,13 @@ async function load() {
 function render() {
   const list = activeCity === 'all' ? rooms : rooms.filter((r) => r.city === activeCity);
   grid.innerHTML = list.map(cardHTML).join('');
+  // (re)brancher le scroll-reveal sur les cartes fraîchement rendues, avec stagger
+  observeReveals(grid.querySelectorAll('.card.reveal'));
 }
 
-function cardHTML(r) {
+function cardHTML(r, i) {
   return `
-    <article class="card">
+    <article class="card reveal" style="animation-delay:${(i % 8) * 80}ms">
       <div class="card-media">
         <img src="${r.image}" alt="${r.title}" loading="lazy" />
         <span class="card-badge">${r.cityLabel}</span>
@@ -115,5 +117,72 @@ if (new URLSearchParams(location.search).get('canceled')) {
   // nettoyage de l'URL
   history.replaceState({}, '', location.pathname + '#chambres');
 }
+
+/* ============================================================
+   ANIMATIONS
+   ============================================================ */
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// --- Scroll reveal (IntersectionObserver) ---
+const revealObserver = reduceMotion
+  ? null
+  : new IntersectionObserver(
+      (entries, obs) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const el = entry.target;
+          const delay = parseInt(el.dataset.delay || '0', 10);
+          setTimeout(() => el.classList.add('in'), delay);
+          // animer les coches des "features" une à une
+          if (el.classList.contains('features')) {
+            [...el.children].forEach((li, i) => {
+              setTimeout(() => li.classList.add('in-tick'), delay + i * 120);
+            });
+          }
+          obs.unobserve(el);
+        });
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -8% 0px' }
+    );
+
+function observeReveals(nodes) {
+  if (reduceMotion) {
+    nodes.forEach((n) => n.classList.add('in'));
+    return;
+  }
+  nodes.forEach((n) => revealObserver.observe(n));
+}
+
+// Révéler tous les éléments .reveal statiques déjà présents
+observeReveals(document.querySelectorAll('.reveal'));
+
+// --- Compteurs animés dans le hero ---
+function animateCounters() {
+  document.querySelectorAll('[data-count]').forEach((el) => {
+    const target = parseInt(el.dataset.count, 10);
+    const suffix = el.dataset.suffix || '';
+    if (reduceMotion) {
+      el.innerHTML = target.toLocaleString('fr-FR') + suffix;
+      return;
+    }
+    const duration = 1400;
+    const start = performance.now();
+    function tick(now) {
+      const p = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - p, 3); // easeOutCubic
+      el.innerHTML = Math.round(target * eased).toLocaleString('fr-FR') + suffix;
+      if (p < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  });
+}
+// démarrer après l'entrée du hero
+setTimeout(animateCounters, reduceMotion ? 0 : 850);
+
+// --- Ombre du header au scroll ---
+const nav = document.querySelector('.nav');
+const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 20);
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
 
 load();
