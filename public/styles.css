@@ -253,6 +253,40 @@ h1, h2, h3, .brand-name, .price-value, .total-value {
 }
 .footer-sub { margin-top: 6px; font-size: .82rem; opacity: .8; }
 
+/* ---------- Bouton WhatsApp flottant ---------- */
+.wa-float {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 90;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px;
+  background: var(--wa);
+  color: #fff;
+  border-radius: 999px;
+  box-shadow: 0 8px 24px rgba(37, 211, 102, .45);
+  transition: transform .2s ease, box-shadow .2s ease;
+  animation: waPulse 2.4s ease-out infinite;
+}
+.wa-float:hover { transform: scale(1.06); box-shadow: 0 10px 30px rgba(37, 211, 102, .55); }
+.wa-float:active { transform: scale(.97); }
+.wa-float svg { flex-shrink: 0; }
+.wa-float-label { font-weight: 600; font-size: 1rem; padding-right: 6px; }
+
+@keyframes waPulse {
+  0%   { box-shadow: 0 8px 24px rgba(37,211,102,.45), 0 0 0 0 rgba(37,211,102,.5); }
+  70%  { box-shadow: 0 8px 24px rgba(37,211,102,.45), 0 0 0 14px rgba(37,211,102,0); }
+  100% { box-shadow: 0 8px 24px rgba(37,211,102,.45), 0 0 0 0 rgba(37,211,102,0); }
+}
+
+/* Sur mobile : bouton rond compact (icône seule) */
+@media (max-width: 640px) {
+  .wa-float { padding: 15px; right: 16px; bottom: 16px; }
+  .wa-float-label { display: none; }
+}
+
 /* ---------- Modal ---------- */
 .modal { position: fixed; inset: 0; z-index: 100; display: grid; place-items: center; padding: 16px; }
 .modal[hidden] { display: none; }
