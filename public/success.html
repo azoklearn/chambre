@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Réservation confirmée — Student Flat Room Paris</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .thanks { min-height: 100vh; display: grid; place-items: center; padding: 24px; text-align: center; }
+    .thanks-card { background: var(--surface); border: 1px solid var(--line); border-radius: 24px; padding: clamp(32px, 6vw, 56px); max-width: 520px; box-shadow: var(--shadow-lg); }
+    .check { width: 72px; height: 72px; border-radius: 50%; background: rgba(31,111,92,.12); color: var(--brand); display: grid; place-items: center; margin: 0 auto 22px; font-size: 2.2rem; }
+    .thanks-card h1 { font-size: clamp(1.6rem, 5vw, 2.3rem); }
+    .thanks-card p { color: var(--ink-soft); margin: 14px 0 0; }
+    .thanks-actions { margin-top: 28px; display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+  </style>
+</head>
+<body>
+  <main class="thanks">
+    <div class="thanks-card">
+      <div class="check">✓</div>
+      <h1>Réservation confirmée&nbsp;!</h1>
+      <p id="room-line">Merci, votre paiement a bien été reçu.</p>
+      <p>Nous vous contactons très vite pour finaliser votre entrée dans les lieux. Un reçu vous a été envoyé par e-mail.</p>
+      <div class="thanks-actions">
+        <a class="btn btn-primary" href="/">Retour à l'accueil</a>
+        <a class="btn btn-whatsapp" href="https://wa.me/33672294751" target="_blank" rel="noopener">Nous écrire sur WhatsApp</a>
+      </div>
+    </div>
+  </main>
+  <script>
+    const room = new URLSearchParams(location.search).get('room');
+    if (room) {
+      document.getElementById('room-line').textContent =
+        `Merci ! Votre réservation pour la « ${room} » est confirmée.`;
+    }
+  </script>
+</body>
+</html>
