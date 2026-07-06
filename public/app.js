@@ -185,4 +185,20 @@ const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 20);
 window.addEventListener('scroll', onScroll, { passive: true });
 onScroll();
 
+// --- Menu hamburger (mobile) ---
+const navToggle = document.getElementById('nav-toggle');
+const navLinks = document.getElementById('nav-links');
+function setMenu(open) {
+  navLinks.classList.toggle('open', open);
+  navToggle.setAttribute('aria-expanded', String(open));
+  navToggle.setAttribute('aria-label', open ? 'Fermer le menu' : 'Ouvrir le menu');
+}
+navToggle.addEventListener('click', () => setMenu(!navLinks.classList.contains('open')));
+// Fermer le menu après un clic sur un lien
+navLinks.querySelectorAll('a').forEach((a) => a.addEventListener('click', () => setMenu(false)));
+// Fermer avec Échap
+document.addEventListener('keydown', (e) => {
+  if (e.key === 'Escape' && navLinks.classList.contains('open')) setMenu(false);
+});
+
 load();
