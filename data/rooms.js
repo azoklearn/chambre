@@ -7,6 +7,16 @@ const PRICING = {
 };
 PRICING.total = PRICING.rent + PRICING.deposit + PRICING.insurance; // 1680 €
 
+// Agencement / équipements communs à chaque chambre
+const AMENITIES = [
+  { icon: 'wifi', label: 'Wifi' },
+  { icon: 'bed', label: 'Lit 140×190' },
+  { icon: 'wardrobe', label: 'Armoire' },
+  { icon: 'desk', label: 'Bureau' },
+  { icon: 'chair', label: 'Chaise' },
+  { icon: 'nightstand', label: 'Chevet' },
+];
+
 function buildRooms(city, cityLabel, count, folder) {
   return Array.from({ length: count }, (_, i) => {
     const n = i + 1;
@@ -17,6 +27,7 @@ function buildRooms(city, cityLabel, count, folder) {
       cityLabel,
       title: `Chambre ${n} — ${cityLabel}`,
       image: `/images/${folder}/chambre-${n}.jpeg`,
+      amenities: AMENITIES,
       ...PRICING,
     };
   });
@@ -27,4 +38,4 @@ const ROOMS = [
   ...buildRooms('rosny', 'Rosny-sous-Bois', 6, 'rosny'),
 ];
 
-module.exports = { ROOMS, PRICING };
+module.exports = { ROOMS, PRICING, AMENITIES };

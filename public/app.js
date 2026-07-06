@@ -9,6 +9,18 @@ let selectedRoom = null;
 
 document.getElementById('year').textContent = new Date().getFullYear();
 
+// --- Icônes des équipements (SVG inline) ---
+const AMENITY_ICONS = {
+  wifi: '<path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M5 12.5a10 10 0 0 1 14 0M8 15.5a6 6 0 0 1 8 0"/><circle cx="12" cy="19" r="1.4" fill="currentColor"/>',
+  bed: '<path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 18v-6h18v6M3 12V7m18 5V9a2 2 0 0 0-2-2H8v5M3 18v2m18-2v2"/>',
+  wardrobe: '<rect x="5" y="3" width="14" height="18" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 3v18M9.5 9.5v2m5-2v2"/>',
+  desk: '<path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 8h18M4 8v12m16-12v12M4 20h5v-4a2 2 0 0 1 2-2h0"/>',
+  chair: '<path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M7 3v9m10-9v9M6 12h12M8 12l-1 8m9-8 1 8M7 16h10"/>',
+  nightstand: '<rect x="5" y="6" width="14" height="14" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M5 12h14M11 9h2m-2 6h2M7 20v1m10-1v1"/>',
+};
+const amenityIcon = (name) =>
+  `<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">${AMENITY_ICONS[name] || ''}</svg>`;
+
 // --- Chargement des chambres ---
 async function load() {
   try {
@@ -39,6 +51,9 @@ function cardHTML(r, i) {
       <div class="card-body">
         <h3 class="card-title">Chambre n°${r.number}</h3>
         <p class="card-loc">📍 ${r.cityLabel}</p>
+        <ul class="card-amenities">
+          ${(r.amenities || []).map((a) => `<li title="${a.label}">${amenityIcon(a.icon)}<span>${a.label}</span></li>`).join('')}
+        </ul>
         <p class="card-price"><strong>${euro(r.rent)}</strong> / mois</p>
         <button class="btn btn-primary card-btn" data-room="${r.id}">Réserver cette chambre</button>
       </div>
@@ -67,6 +82,9 @@ function openModal(r) {
   document.getElementById('modal-img').alt = r.title;
   document.getElementById('modal-title').textContent = `Chambre n°${r.number}`;
   document.getElementById('modal-city').textContent = `📍 ${r.cityLabel}`;
+  document.getElementById('modal-amenities').innerHTML = (r.amenities || [])
+    .map((a) => `<li>${amenityIcon(a.icon)}<span>${a.label}</span></li>`)
+    .join('');
   document.getElementById('modal-error').hidden = true;
   modal.hidden = false;
   document.body.style.overflow = 'hidden';
