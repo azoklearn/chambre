@@ -1,7 +1,9 @@
 const grid = document.getElementById('rooms-grid');
 const filters = document.getElementById('filters');
 const modal = document.getElementById('modal');
-const euro = (n) => n.toLocaleString(LANG === 'en' ? 'en-GB' : 'fr-FR') + ' €';
+const euro = (n) => n.toLocaleString(LANG === 'en' ? 'en-GB' : 'fr-FR') + ' €';
+
+const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 let rooms = [];
 let activeCity = 'all';
@@ -22,18 +24,21 @@ const I18N = {
     'nav.contact': 'Contact',
     'nav.book': 'Réserver',
     'nav.bookRoom': 'Réserver une chambre',
-    'hero.title': 'Votre chambre meublée,<br />aux portes de Paris.',
+    'hero.title': 'Votre chambre meublée,<br /><em>aux portes de Paris.</em>',
     'hero.sub': 'Des chambres tout confort, prêtes à vivre, à deux pas des transports. Réservez et payez en ligne en quelques minutes.',
-    'hero.cta1': 'Voir les chambres disponibles',
+    'hero.cta1': 'Voir les chambres',
     'hero.cta2': 'Tarifs &amp; conditions',
     'hero.stat1': 'chambres',
     'hero.stat2': 'par mois',
     'hero.stat3': 'résidences',
-    'hero.scroll': 'Découvrir les chambres',
-    'rooms.title': 'Nos chambres disponibles',
+    'hero.scroll': 'Découvrir',
+    'marquee': 'Chambres meublées ✦ Gagny ✦ Rosny-sous-Bois ✦ 680 € par mois ✦ Paiement en ligne sécurisé',
+    'rooms.title': 'Nos chambres <em>disponibles</em>',
     'rooms.sub': 'Chaque photo correspond à une chambre réelle. Choisissez la vôtre.',
     'filters.all': 'Toutes',
-    'info.title': 'Tarifs &amp; conditions',
+    'band.quote': 'Des espaces pensés pour vivre, pas seulement pour dormir.',
+    'band.cap': 'Salle de bain — Résidence de Gagny',
+    'info.title': 'Tarifs &amp; <em>conditions</em>',
     'info.sub': 'Une tarification claire, identique pour toutes les chambres.',
     'price.rentLabel': 'Loyer mensuel',
     'price.rentNote': 'chambre standard, charges comprises',
@@ -47,8 +52,9 @@ const I18N = {
     'features.f2': 'Salle de bain moderne',
     'features.f3': 'Proche transports vers Paris',
     'features.f4': 'Paiement sécurisé par Stripe',
-    'contact.title': 'Une question avant de réserver&nbsp;?',
-    'contact.sub': 'Écrivez-nous directement sur WhatsApp, réponse rapide.',
+    'contact.title': 'Une question&nbsp;? <em>Parlons-en.</em>',
+    'contact.sub': 'Écrivez-nous directement sur WhatsApp, réponse rapide — ou appelez-nous.',
+    'contact.or': 'ou par téléphone :',
     'footer.sub': 'Paiement sécurisé · Chambres meublées · Île-de-France',
     'modal.amenTitle': 'Agencement de la chambre',
     'modal.rent': '1<sup>er</sup> mois de loyer',
@@ -57,6 +63,7 @@ const I18N = {
     'modal.total': 'Total à régler',
     'modal.emailLabel': 'Votre e-mail (pour le reçu)',
     'modal.emailPh': 'prenom@email.com',
+    'modal.emailErr': 'Adresse e-mail invalide.',
     'modal.payBtn': 'Réserver &amp; payer en ligne',
     'modal.processing': 'Redirection vers le paiement…',
     'modal.secure': 'Paiement sécurisé via Stripe — aucune donnée bancaire ne transite par ce site.',
@@ -64,7 +71,7 @@ const I18N = {
     'card.available': 'Disponible',
     'card.room': 'Chambre n°',
     'card.perMonth': '/ mois',
-    'card.book': 'Réserver cette chambre',
+    'card.book': 'Réserver',
     'error.unknown': 'Erreur inconnue',
   },
   en: {
@@ -76,18 +83,21 @@ const I18N = {
     'nav.contact': 'Contact',
     'nav.book': 'Book',
     'nav.bookRoom': 'Book a room',
-    'hero.title': 'Your furnished room,<br />at the gates of Paris.',
+    'hero.title': 'Your furnished room,<br /><em>at the gates of Paris.</em>',
     'hero.sub': 'Fully-equipped, move-in-ready rooms, moments from public transport. Book and pay online in just a few minutes.',
-    'hero.cta1': 'See available rooms',
+    'hero.cta1': 'See the rooms',
     'hero.cta2': 'Pricing &amp; terms',
     'hero.stat1': 'rooms',
     'hero.stat2': 'per month',
     'hero.stat3': 'residences',
-    'hero.scroll': 'Discover the rooms',
-    'rooms.title': 'Our available rooms',
+    'hero.scroll': 'Discover',
+    'marquee': 'Furnished rooms ✦ Gagny ✦ Rosny-sous-Bois ✦ €680 per month ✦ Secure online payment',
+    'rooms.title': 'Our <em>available</em> rooms',
     'rooms.sub': 'Each photo shows a real room. Choose yours.',
     'filters.all': 'All',
-    'info.title': 'Pricing &amp; terms',
+    'band.quote': 'Spaces designed for living, not just for sleeping.',
+    'band.cap': 'Bathroom — Gagny residence',
+    'info.title': 'Pricing &amp; <em>terms</em>',
     'info.sub': 'Clear pricing, identical for every room.',
     'price.rentLabel': 'Monthly rent',
     'price.rentNote': 'standard room, utilities included',
@@ -101,8 +111,9 @@ const I18N = {
     'features.f2': 'Modern bathroom',
     'features.f3': 'Close to transport to Paris',
     'features.f4': 'Secure payment via Stripe',
-    'contact.title': 'A question before booking?',
-    'contact.sub': 'Message us directly on WhatsApp — quick reply.',
+    'contact.title': 'A question? <em>Let’s talk.</em>',
+    'contact.sub': 'Message us directly on WhatsApp — quick reply. Or give us a call.',
+    'contact.or': 'or by phone:',
     'footer.sub': 'Secure payment · Furnished rooms · Greater Paris',
     'modal.amenTitle': 'Room layout',
     'modal.rent': "First month's rent",
@@ -111,6 +122,7 @@ const I18N = {
     'modal.total': 'Total due',
     'modal.emailLabel': 'Your email (for the receipt)',
     'modal.emailPh': 'firstname@email.com',
+    'modal.emailErr': 'Invalid email address.',
     'modal.payBtn': 'Book &amp; pay online',
     'modal.processing': 'Redirecting to payment…',
     'modal.secure': 'Secure payment via Stripe — no bank details pass through this site.',
@@ -118,7 +130,7 @@ const I18N = {
     'card.available': 'Available',
     'card.room': 'Room ',
     'card.perMonth': '/ month',
-    'card.book': 'Book this room',
+    'card.book': 'Book',
     'error.unknown': 'Unknown error',
   },
 };
@@ -151,6 +163,24 @@ function applyStaticI18n() {
   if (md) md.setAttribute('content', stripTags(t('meta.desc')));
 }
 
+/* Titre du hero découpé ligne à ligne pour la révélation en masque */
+function splitHeroTitle() {
+  const h1 = document.getElementById('hero-title');
+  if (!h1) return;
+  const parts = t('hero.title').split(/<br\s*\/?>/i);
+  h1.innerHTML = parts
+    .map((p, i) => `<span class="hline"><span class="hline-in" style="transition-delay:${0.55 + i * 0.14}s">${p}</span></span>`)
+    .join('');
+}
+
+/* Bandeau défilant : deux segments identiques pour une boucle sans couture */
+function buildMarquee() {
+  const track = document.getElementById('marquee-track');
+  if (!track) return;
+  const seg = (t('marquee') + ' ✦ ').repeat(3);
+  track.innerHTML = `<span class="marquee-seg">${seg}</span><span class="marquee-seg">${seg}</span>`;
+}
+
 function updateLangToggle() {
   document.querySelectorAll('#lang-toggle button').forEach((b) => {
     b.classList.toggle('is-active', b.dataset.lang === LANG);
@@ -161,6 +191,8 @@ function setLang(lang) {
   LANG = lang === 'en' ? 'en' : 'fr';
   localStorage.setItem('lang', LANG);
   applyStaticI18n();
+  splitHeroTitle();
+  buildMarquee();
   updateLangToggle();
   render();
   refreshModalIfOpen();
@@ -173,15 +205,15 @@ document.getElementById('lang-toggle').addEventListener('click', (e) => {
 
 // --- Icônes des équipements (SVG inline) ---
 const AMENITY_ICONS = {
-  wifi: '<path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M5 12.5a10 10 0 0 1 14 0M8 15.5a6 6 0 0 1 8 0"/><circle cx="12" cy="19" r="1.4" fill="currentColor"/>',
-  bed: '<path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 18v-6h18v6M3 12V7m18 5V9a2 2 0 0 0-2-2H8v5M3 18v2m18-2v2"/>',
-  wardrobe: '<rect x="5" y="3" width="14" height="18" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M12 3v18M9.5 9.5v2m5-2v2"/>',
-  desk: '<path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M3 8h18M4 8v12m16-12v12M4 20h5v-4a2 2 0 0 1 2-2h0"/>',
-  chair: '<path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M7 3v9m10-9v9M6 12h12M8 12l-1 8m9-8 1 8M7 16h10"/>',
-  nightstand: '<rect x="5" y="6" width="14" height="14" rx="1.5" fill="none" stroke="currentColor" stroke-width="2"/><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M5 12h14M11 9h2m-2 6h2M7 20v1m10-1v1"/>',
+  wifi: '<path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" d="M5 12.5a10 10 0 0 1 14 0M8 15.5a6 6 0 0 1 8 0"/><circle cx="12" cy="19" r="1.3" fill="currentColor"/>',
+  bed: '<path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M3 18v-6h18v6M3 12V7m18 5V9a2 2 0 0 0-2-2H8v5M3 18v2m18-2v2"/>',
+  wardrobe: '<rect x="5" y="3" width="14" height="18" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" d="M12 3v18M9.5 9.5v2m5-2v2"/>',
+  desk: '<path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M3 8h18M4 8v12m16-12v12M4 20h5v-4a2 2 0 0 1 2-2h0"/>',
+  chair: '<path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" d="M7 3v9m10-9v9M6 12h12M8 12l-1 8m9-8 1 8M7 16h10"/>',
+  nightstand: '<rect x="5" y="6" width="14" height="14" rx="1.5" fill="none" stroke="currentColor" stroke-width="1.6"/><path fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" d="M5 12h14M11 9h2m-2 6h2M7 20v1m10-1v1"/>',
 };
 const amenityIcon = (name) =>
-  `<svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true">${AMENITY_ICONS[name] || ''}</svg>`;
+  `<svg viewBox="0 0 24 24" width="17" height="17" aria-hidden="true">${AMENITY_ICONS[name] || ''}</svg>`;
 
 // --- Chargement des chambres ---
 async function load() {
@@ -191,7 +223,7 @@ async function load() {
     rooms = data.rooms;
     render();
   } catch (e) {
-    grid.innerHTML = '<p style="color:var(--ink-soft)">Impossible de charger les chambres. Réessayez plus tard.</p>';
+    grid.innerHTML = '<p class="grid-msg">Impossible de charger les chambres. Réessayez plus tard.</p>';
   }
 }
 
@@ -203,21 +235,29 @@ function render() {
 }
 
 function cardHTML(r, i) {
+  const num = String(r.number).padStart(2, '0');
   return `
-    <article class="card reveal" style="animation-delay:${(i % 8) * 80}ms">
+    <article class="card reveal" style="animation-delay:${(i % 9) * 70}ms">
       <div class="card-media">
         <img src="${r.image}" alt="${r.title}" loading="lazy" />
-        <span class="card-badge">${r.cityLabel}</span>
+        <span class="card-num" aria-hidden="true">${num}</span>
         <span class="card-avail">${t('card.available')}</span>
       </div>
       <div class="card-body">
-        <h3 class="card-title">${t('card.room')}${r.number}</h3>
-        <p class="card-loc">📍 ${r.cityLabel}</p>
+        <div class="card-head">
+          <h3 class="card-title">${t('card.room')}${num}</h3>
+          <span class="card-loc">${r.cityLabel}</span>
+        </div>
         <ul class="card-amenities">
-          ${(r.amenities || []).map((a) => `<li title="${amenityLabel(a.icon)}">${amenityIcon(a.icon)}<span>${amenityLabel(a.icon)}</span></li>`).join('')}
+          ${(r.amenities || []).map((a) => `<li title="${amenityLabel(a.icon)}" aria-label="${amenityLabel(a.icon)}">${amenityIcon(a.icon)}</li>`).join('')}
         </ul>
-        <p class="card-price"><strong>${euro(r.rent)}</strong> ${t('card.perMonth')}</p>
-        <button class="btn btn-primary card-btn" data-room="${r.id}">${t('card.book')}</button>
+        <div class="card-foot">
+          <p class="card-price"><strong>${euro(r.rent)}</strong><span>${t('card.perMonth')}</span></p>
+          <button class="card-btn" data-room="${r.id}">
+            ${t('card.book')}
+            <svg viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" d="M5 12h14m-6-6 6 6-6 6"/></svg>
+          </button>
+        </div>
       </div>
     </article>`;
 }
@@ -240,10 +280,11 @@ grid.addEventListener('click', (e) => {
 });
 
 function openModal(r) {
+  const num = String(r.number).padStart(2, '0');
   document.getElementById('modal-img').src = r.image;
   document.getElementById('modal-img').alt = r.title;
-  document.getElementById('modal-title').textContent = `${t('card.room')}${r.number}`;
-  document.getElementById('modal-city').textContent = `📍 ${r.cityLabel}`;
+  document.getElementById('modal-title').textContent = `${t('card.room')}${num}`;
+  document.getElementById('modal-city').textContent = `${r.cityLabel} · Île-de-France`;
   document.getElementById('modal-amenities').innerHTML = (r.amenities || [])
     .map((a) => `<li>${amenityIcon(a.icon)}<span>${amenityLabel(a.icon)}</span></li>`)
     .join('');
@@ -255,7 +296,9 @@ function openModal(r) {
 // Rafraîchir le contenu dynamique du modal si ouvert (changement de langue)
 function refreshModalIfOpen() {
   if (!modal.hidden && selectedRoom) {
-    document.getElementById('modal-title').textContent = `${t('card.room')}${selectedRoom.number}`;
+    const num = String(selectedRoom.number).padStart(2, '0');
+    document.getElementById('modal-title').textContent = `${t('card.room')}${num}`;
+    document.getElementById('modal-city').textContent = `${selectedRoom.cityLabel} · Île-de-France`;
     document.getElementById('modal-amenities').innerHTML = (selectedRoom.amenities || [])
       .map((a) => `<li>${amenityIcon(a.icon)}<span>${amenityLabel(a.icon)}</span></li>`)
       .join('');
@@ -281,6 +324,13 @@ payBtn.addEventListener('click', async () => {
   const email = document.getElementById('modal-email').value.trim();
   const errEl = document.getElementById('modal-error');
   errEl.hidden = true;
+
+  // Validation simple de l'e-mail (optionnel, mais s'il est saisi il doit être valide)
+  if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    errEl.textContent = t('modal.emailErr');
+    errEl.hidden = false;
+    return;
+  }
 
   payBtn.disabled = true;
   payBtn.textContent = stripTags(t('modal.processing'));
@@ -309,9 +359,148 @@ if (new URLSearchParams(location.search).get('canceled')) {
 }
 
 /* ============================================================
-   ANIMATIONS
+   PRELOADER — ouverture de séance
    ============================================================ */
-const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+function initLoader() {
+  const done = () => {
+    if (document.body.classList.contains('is-ready')) return;
+    document.body.classList.remove('is-loading');
+    document.body.classList.add('is-ready');
+    // les compteurs démarrent quand le rideau est levé
+    setTimeout(animateCounters, reduceMotion ? 0 : 1000);
+  };
+  if (reduceMotion) {
+    done();
+    return;
+  }
+  const MIN = 1100; // durée minimale d'affichage du loader
+  const t0 = performance.now();
+  window.addEventListener('load', () => {
+    const wait = Math.max(0, MIN - (performance.now() - t0));
+    setTimeout(done, wait);
+  });
+  // garde-fou si l'évènement load tarde (image lente, etc.)
+  setTimeout(done, 3200);
+}
+
+/* ============================================================
+   HERO — diaporama Ken Burns
+   ============================================================ */
+function initSlideshow() {
+  const slides = [...document.querySelectorAll('.hero-slide')];
+  const idxEl = document.getElementById('slide-idx');
+  if (slides.length < 2 || reduceMotion) return;
+  let i = 0;
+  setInterval(() => {
+    if (document.hidden) return; // onglet en arrière-plan
+    slides[i].classList.remove('is-active');
+    i = (i + 1) % slides.length;
+    slides[i].classList.add('is-active');
+    if (idxEl) idxEl.textContent = String(i + 1).padStart(2, '0');
+  }, 6500);
+}
+
+/* ============================================================
+   PARALLAXE — hero + bandes immersives
+   ============================================================ */
+function initParallax() {
+  if (reduceMotion) return;
+  const heroBg = document.getElementById('hero-bg');
+  const els = [...document.querySelectorAll('[data-parallax]')];
+  if (!heroBg && !els.length) return;
+
+  let ticking = false;
+  const update = () => {
+    ticking = false;
+    if (heroBg) {
+      const y = Math.min(window.scrollY, window.innerHeight);
+      heroBg.style.transform = `translate3d(0, ${y * 0.28}px, 0)`;
+    }
+    els.forEach((el) => {
+      const rate = parseFloat(el.dataset.parallax) || 0.15;
+      const rect = el.parentElement.getBoundingClientRect();
+      if (rect.bottom < 0 || rect.top > window.innerHeight) return;
+      const delta = rect.top + rect.height / 2 - window.innerHeight / 2;
+      el.style.transform = `translate3d(0, ${-delta * rate}px, 0)`;
+    });
+  };
+  const onScroll = () => {
+    if (!ticking) {
+      ticking = true;
+      requestAnimationFrame(update);
+    }
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll);
+  update();
+}
+
+/* ============================================================
+   BARRE DE PROGRESSION DE LECTURE
+   ============================================================ */
+function initProgress() {
+  const bar = document.getElementById('progress');
+  if (!bar) return;
+  const update = () => {
+    const max = document.documentElement.scrollHeight - window.innerHeight;
+    bar.style.transform = `scaleX(${max > 0 ? window.scrollY / max : 0})`;
+  };
+  window.addEventListener('scroll', update, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+}
+
+/* ============================================================
+   CURSEUR CUSTOM (desktop uniquement)
+   ============================================================ */
+function initCursor() {
+  if (reduceMotion || !window.matchMedia('(pointer: fine)').matches) return;
+  const dot = document.getElementById('cursor-dot');
+  const ring = document.getElementById('cursor-ring');
+  if (!dot || !ring) return;
+
+  document.body.classList.add('has-cursor');
+  let x = innerWidth / 2, y = innerHeight / 2;
+  let rx = x, ry = y;
+  let visible = false;
+
+  window.addEventListener('mousemove', (e) => {
+    x = e.clientX;
+    y = e.clientY;
+    dot.style.transform = `translate(${x}px, ${y}px)`;
+    if (!visible) {
+      visible = true;
+      rx = x; ry = y;
+      document.body.classList.add('cursor-visible');
+    }
+  }, { passive: true });
+
+  document.documentElement.addEventListener('mouseleave', () => {
+    visible = false;
+    document.body.classList.remove('cursor-visible');
+  });
+
+  // L'anneau suit avec inertie
+  (function loop() {
+    rx += (x - rx) * 0.16;
+    ry += (y - ry) * 0.16;
+    ring.style.transform = `translate(${rx}px, ${ry}px)`;
+    requestAnimationFrame(loop);
+  })();
+
+  // Grossit sur les éléments interactifs
+  const HOVERABLE = 'a, button, .chip, [data-cursor]';
+  document.addEventListener('mouseover', (e) => {
+    if (e.target.closest(HOVERABLE)) ring.classList.add('is-hover');
+  });
+  document.addEventListener('mouseout', (e) => {
+    if (e.target.closest(HOVERABLE)) ring.classList.remove('is-hover');
+  });
+}
+
+/* ============================================================
+   ANIMATIONS AU SCROLL
+   ============================================================ */
 
 // --- Scroll reveal (IntersectionObserver) ---
 const revealObserver = reduceMotion
@@ -319,14 +508,24 @@ const revealObserver = reduceMotion
   : new IntersectionObserver(
       (entries, obs) => {
         entries.forEach((entry) => {
-          if (!entry.isIntersecting) return;
+          if (!entry.isIntersecting) {
+            // Élément déjà dépassé (arrivée via ancre / restauration de scroll) : afficher sans animer
+            if (entry.boundingClientRect.bottom < 0) {
+              entry.target.classList.add('in');
+              if (entry.target.classList.contains('features')) {
+                [...entry.target.children].forEach((li) => li.classList.add('in-tick'));
+              }
+              obs.unobserve(entry.target);
+            }
+            return;
+          }
           const el = entry.target;
           const delay = parseInt(el.dataset.delay || '0', 10);
           setTimeout(() => el.classList.add('in'), delay);
-          // animer les coches des "features" une à une
+          // animer les tirets des "features" un à un
           if (el.classList.contains('features')) {
             [...el.children].forEach((li, i) => {
-              setTimeout(() => li.classList.add('in-tick'), delay + i * 120);
+              setTimeout(() => li.classList.add('in-tick'), delay + 400 + i * 140);
             });
           }
           obs.unobserve(el);
@@ -337,14 +536,16 @@ const revealObserver = reduceMotion
 
 function observeReveals(nodes) {
   if (reduceMotion) {
-    nodes.forEach((n) => n.classList.add('in'));
+    nodes.forEach((n) => {
+      n.classList.add('in');
+      if (n.classList.contains('features')) {
+        [...n.children].forEach((li) => li.classList.add('in-tick'));
+      }
+    });
     return;
   }
   nodes.forEach((n) => revealObserver.observe(n));
 }
-
-// Révéler tous les éléments .reveal statiques déjà présents
-observeReveals(document.querySelectorAll('.reveal'));
 
 // --- Compteurs animés dans le hero ---
 function animateCounters() {
@@ -355,7 +556,7 @@ function animateCounters() {
       el.innerHTML = target.toLocaleString('fr-FR') + suffix;
       return;
     }
-    const duration = 1400;
+    const duration = 1500;
     const start = performance.now();
     function tick(now) {
       const p = Math.min((now - start) / duration, 1);
@@ -366,14 +567,12 @@ function animateCounters() {
     requestAnimationFrame(tick);
   });
 }
-// démarrer après l'entrée du hero
-setTimeout(animateCounters, reduceMotion ? 0 : 850);
 
-// --- Ombre du header au scroll ---
+// --- Header : verre fumé au scroll ---
 const nav = document.querySelector('.nav');
-const onScroll = () => nav.classList.toggle('scrolled', window.scrollY > 20);
-window.addEventListener('scroll', onScroll, { passive: true });
-onScroll();
+const onScrollNav = () => nav.classList.toggle('scrolled', window.scrollY > 24);
+window.addEventListener('scroll', onScrollNav, { passive: true });
+onScrollNav();
 
 // --- Menu hamburger (mobile) ---
 const navToggle = document.getElementById('nav-toggle');
@@ -392,7 +591,17 @@ document.addEventListener('keydown', (e) => {
   if (e.key === 'Escape' && navLinks.classList.contains('open')) setMenu(false);
 });
 
-// Appliquer la langue initiale puis charger les chambres
+/* ============================================================
+   INITIALISATION
+   ============================================================ */
 applyStaticI18n();
+splitHeroTitle();
+buildMarquee();
 updateLangToggle();
+initLoader();
+initSlideshow();
+initParallax();
+initProgress();
+initCursor();
+observeReveals(document.querySelectorAll('.reveal'));
 load();
